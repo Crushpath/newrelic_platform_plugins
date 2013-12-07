@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   ## the sub! line in the Rakefile
   s.name              = 'newrelic_resque_agent'
   s.version           = '1.0.1'
-  s.date              = '2013-07-01'
+  s.date              = '2013-12-06'
   # s.rubyforge_project = 'newrelic_resque_agent'
 
   ## Make sure your summary is short. The description may be as long
@@ -52,6 +52,7 @@ This is the New Relic plugin for monitoring Resque developed by Railsware Inc.
   s.add_dependency('newrelic_plugin', "1.0.3")
   s.add_dependency('resque', ">= 1.24.1")
   s.add_dependency('redis', ">= 3.0.4")
+  s.add_dependency('rake', ">= 10.0.1")
 
 
   s.post_install_message = <<-EOF
@@ -70,6 +71,7 @@ This is the New Relic plugin for monitoring Resque developed by Railsware Inc.
     Rakefile
     bin/newrelic_resque_agent
     config/newrelic_plugin.yml.example
+    ic_resque_64.png
     lib/newrelic_resque_agent.rb
     newrelic_resque_agent.gemspec
   ]
