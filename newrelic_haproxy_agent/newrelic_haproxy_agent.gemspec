@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   ## the sub! line in the Rakefile
   s.name              = 'newrelic_haproxy_agent'
   s.version           = '1.0.1'
-  s.date              = '2013-07-13'
+  s.date              = '2013-12-06'
   # s.rubyforge_project = 'newrelic_haproxy_agent'
 
   ## Make sure your summary is short. The description may be as long
@@ -51,7 +51,7 @@ This is the New Relic plugin for monitoring Haproxy developed by Railsware Inc.
   ## that are needed for an end user to actually USE your code.  
   s.add_dependency('newrelic_plugin', "1.0.3")
   s.add_dependency('fastercsv', ">= 1.5.5") if RUBY_VERSION < "1.9"
-
+  s.add_dependency('rake', "10.1.0")
 
   s.post_install_message = <<-EOF
   To get started with this plugin, do
@@ -69,6 +69,7 @@ This is the New Relic plugin for monitoring Haproxy developed by Railsware Inc.
     Rakefile
     bin/newrelic_haproxy_agent
     config/newrelic_plugin.yml.example
+    ic_haproxy_64.png
     lib/newrelic_haproxy_agent.rb
     newrelic_haproxy_agent.gemspec
   ]
