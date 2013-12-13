@@ -19,7 +19,6 @@ module NewRelicHornetQAgent
     attr_reader :ident
 
     def setup_metrics
-      @queue_rate  = NewRelic::Processor::EpochCounter.new
     end
 
     def poll_cycle
@@ -37,7 +36,9 @@ module NewRelicHornetQAgent
         o.gets
         if line =~ /^QueueNames = \[ (.*) \];$/
           queues = $1.split(/, */)
+          @queue_rates ||= {}
           queues.each do |queue|
+            @queue_rates[queue] ||= NewRelic::Processor::EpochCounter.new
             i.puts "get -b org.hornetq:address=\"#{queue}\",module=Core,name=\"#{queue}\",type=Queue MessageCount"
             line = o.gets
             o.gets
@@ -50,7 +51,7 @@ module NewRelicHornetQAgent
 
             report_metric "#{queue}/QueueDepth", "Messages", queue_depth
             puts "#{queue}/QueueDepth as Messages => #{queue_depth}"
-            value = @queue_rate.process(queue_processed)
+            value = @queue_rates[queue].process(queue_processed)
             report_metric "#{queue}/QueueRate", "Messages/Second", value
             puts "#{queue}/QueueRate as Messages/Second => #{value}"
           end

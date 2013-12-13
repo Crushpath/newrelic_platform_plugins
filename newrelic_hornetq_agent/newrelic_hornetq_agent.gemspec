@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
   s.name              = 'newrelic_hornetq_agent'
-  s.version           = '1.0.0'
+  s.version           = '1.0.1'
   s.date              = '2013-12-06'
   # s.rubyforge_project = 'newrelic_hornetq_agent'
 
