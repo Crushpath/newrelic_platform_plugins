@@ -42,11 +42,11 @@ module NewRelicHornetQAgent
             line = o.gets
             o.gets
             message_count = $1 if line =~ /^MessageCount = (.*);$/
-            queue_depth = message_count.to_i
+            queue_depth = message_count.to_i.abs
             i.puts "run -b org.hornetq:address=\"#{queue}\",module=Core,name=\"#{queue}\",type=Queue listMessageCounter"
             line = o.gets
             list_message_counter = JSON.parse($1) if line =~ /^(\{.*\})$/
-            queue_processed = list_message_counter[:count]
+            queue_processed = list_message_counter[:count].to_i.abs
 
             report_metric "#{queue}/QueueDepth", "Messages", queue_depth
             puts "#{queue}/QueueDepth as Messages => #{queue_depth}"
