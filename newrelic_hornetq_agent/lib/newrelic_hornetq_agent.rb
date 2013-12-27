@@ -7,7 +7,7 @@ require 'open3'
 
 module NewRelicHornetQAgent
 
-  VERSION = '1.0.0'
+  VERSION = '1.1.0'
 
   class Agent < NewRelic::Plugin::Agent::Base
 
@@ -29,6 +29,9 @@ module NewRelicHornetQAgent
 
       system("cd /tmp; wget http://downloads.sourceforge.net/cyclops-group/#{jarname}") if ! File.exists?(jarfile)
 
+      aggregate_queue_depth = 0
+      aggregate_queue_rate = 0
+
       command = "#{java} #{javaopts} -jar #{jarfile} -l #{jmxrmi} -v silent -n"
       Open3.popen3(command) do |i, o, e, t|
         i.puts "get -b org.hornetq:module=Core,type=Server QueueNames"
@@ -49,14 +52,20 @@ module NewRelicHornetQAgent
             list_message_counter = JSON.parse($1) if line =~ /^(\{.*\})$/
             queue_processed = list_message_counter["count"].to_i.abs
 
+            aggregate_queue_depth += queue_depth
             report_metric "#{queue}/QueueDepth", "Messages", queue_depth
             puts "#{queue}/QueueDepth as Messages => #{queue_depth} [#{queue_processed}]"
             value = @queue_rates[queue].process(queue_processed)
+            aggregate_queue_rate += value
             report_metric "#{queue}/QueueRate", "Messages/Second", value
             puts "#{queue}/QueueRate as Messages/Second => #{value}"
           end
         end
       end
+      report_metric "Aggregate/QueueDepth", "Messages", aggregate_queue_depth
+      puts "Aggregate/QueueDepth as Messages => #{aggregate_queue_depth}"
+      report_metric "Aggregate/QueueRate", "Messages/Second", aggregate_queue_rate
+      puts "Aggregate/QueueRate as Messages/Second => #{aggregate_queue_rate}"
     end
   end
 
