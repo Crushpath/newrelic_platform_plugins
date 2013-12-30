@@ -5,7 +5,7 @@ $LOAD_PATH.unshift File.expand_path "../../lib", __FILE__
 require "newrelic_resque_agent"
 require 'optparse'
 
-CONFIG_PATH = "newrelic_resque_agent.yml"
+CONFIG_PATH = ENV['NEWRELIC_RESQUE_AGENT_FILE'] || "newrelic_resque_agent.yml"
 
 NewRelic::Plugin::Config.config_file = CONFIG_PATH
 
