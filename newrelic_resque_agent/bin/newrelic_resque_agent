@@ -5,7 +5,7 @@ $LOAD_PATH.unshift File.expand_path "../../lib", __FILE__
 require "newrelic_resque_agent"
 require 'optparse'
 
-CONFIG_PATH = ENV['NEWRELIC_RESQUE_AGENT_FILE'] || "newrelic_resque_agent.yml"
+CONFIG_PATH = ENV['NEWRELIC_RESQUE_AGENT_FILE'] || "config/newrelic_resque_agent.yml"
 
 NewRelic::Plugin::Config.config_file = CONFIG_PATH
 
@@ -43,6 +43,8 @@ if args.first == "run"
     puts "Agent config file not found: #{NewRelic::Plugin::Config.config_file.inspect}"
     puts "Run 'sudo newrelic_resque_agent install' for setup config"
     exit 1
+  else
+    puts "Using config file from #{NewRelic::Plugin::Config.config_file}"
   end
   NewRelicResqueAgent.run
 elsif args.first == "install"
