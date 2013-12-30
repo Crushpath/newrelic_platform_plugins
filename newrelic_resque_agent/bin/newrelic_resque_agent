@@ -5,7 +5,9 @@ $LOAD_PATH.unshift File.expand_path "../../lib", __FILE__
 require "newrelic_resque_agent"
 require 'optparse'
 
-NewRelic::Plugin::Config.config_file = "/etc/newrelic/newrelic_resque_agent.yml"
+CONFIG_PATH = "newrelic_resque_agent.yml"
+
+NewRelic::Plugin::Config.config_file = CONFIG_PATH
 
 options = OptionParser.new do |opts|
   opts.banner = <<-EOF
@@ -47,11 +49,10 @@ elsif args.first == "install"
   config_file = File.read(File.expand_path("../../config/newrelic_plugin.yml.example", __FILE__))
  
   require 'fileutils'
-  FileUtils.mkdir_p "/etc/newrelic"
-  File.open("/etc/newrelic/newrelic_resque_agent.yml", "w") do | io |
+  File.open(CONFIG_PATH, "w") do | io |
     io.write(config_file)
   end
-  puts "Saved agent config file #{File.expand_path("/etc/newrelic/newrelic_resque_agent.yml")}"
+  puts "Saved agent config file #{File.expand_path(CONFIG_PATH)}"
 else
   puts options
 end

@@ -9,7 +9,7 @@ require 'redis'
 
 module NewRelicResqueAgent
   
-  VERSION = '1.0.1'
+  VERSION = '1.0.2'
 
   class Agent < NewRelic::Plugin::Agent::Base
 
